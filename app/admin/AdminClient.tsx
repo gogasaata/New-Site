@@ -21,6 +21,19 @@ export default function AdminClient({ loggedIn: initial, configured }: { loggedI
     return [...m.entries()];
   }, []);
   const [tab, setTab] = useState(groups[0][0]);
+  const [messages, setMessages] = useState<{ id: number; name: string; email: string; message: string; created_at: string }[]>([]);
+
+  async function loadMessages() {
+    const r = await fetch("/api/admin/messages");
+    if (r.status === 401) return setLoggedIn(false);
+    const d = await r.json();
+    setMessages(d.messages ?? []);
+  }
+  async function removeMessage(id: number) {
+    if (!confirm("Delete this message?")) return;
+    await fetch("/api/admin/messages", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) });
+    loadMessages();
+  }
 
   useEffect(() => {
     if (!loggedIn) return;
@@ -69,7 +82,7 @@ export default function AdminClient({ loggedIn: initial, configured }: { loggedI
     );
   }
 
-  const fields = groups.find(([g]) => g === tab)![1];
+  const fields = groups.find(([g]) => g === tab)?.[1] ?? [];
 
   return (
     <main className="min-h-screen bg-cream">
@@ -81,7 +94,7 @@ export default function AdminClient({ loggedIn: initial, configured }: { loggedI
         <div className="flex items-center gap-4 text-[13px]">
           <a href="/" target="_blank" className="uppercase tracking-nav hover:text-wine">View site ↗</a>
           <button onClick={logout} className="uppercase tracking-nav hover:text-wine">Log out</button>
-          <button onClick={save} disabled={saving} className="h-[40px] bg-wine px-6 uppercase tracking-[0.18em] text-white hover:bg-wine-dark disabled:opacity-60">
+          <button onClick={save} disabled={saving || tab === "Messages"} className="h-[40px] bg-wine px-6 uppercase tracking-[0.18em] text-white hover:bg-wine-dark disabled:opacity-60">
             {saving ? "Saving…" : "Save changes"}
           </button>
         </div>
@@ -98,13 +111,28 @@ export default function AdminClient({ loggedIn: initial, configured }: { loggedI
           <p className={`mb-6 border p-4 text-[14px] ${status.type === "ok" ? "border-green-700/40 bg-green-50" : "border-wine/40 bg-wine/5"}`}>{status.msg}</p>
         )}
         <div className="mb-8 flex flex-wrap gap-2">
-          {groups.map(([g]) => (
-            <button key={g} onClick={() => setTab(g)}
+          {[...groups.map(([g]) => g), "Messages"].map((g) => (
+            <button key={g} onClick={() => { setTab(g); if (g === "Messages") loadMessages(); }}
               className={`px-4 py-2 text-[12px] uppercase tracking-nav ${tab === g ? "bg-ink text-white" : "border border-ink/20 hover:border-wine"}`}>
               {g}
             </button>
           ))}
         </div>
+        {tab === "Messages" ? (
+          <div className="space-y-4">
+            {messages.length === 0 && <p className="text-[14px] text-slate2">No messages yet{supabase ? "." : " (Supabase is not connected)."}</p>}
+            {messages.map((m) => (
+              <article key={m.id} className="border border-ink/15 bg-white p-4 text-[15px]">
+                <div className="flex flex-wrap items-baseline justify-between gap-2">
+                  <p><strong>{m.name}</strong> · <a className="text-wine hover:underline" href={`mailto:${m.email}`}>{m.email}</a></p>
+                  <p className="text-[12px] text-slate2">{new Date(m.created_at).toLocaleString("en-GB")}</p>
+                </div>
+                <p className="mt-3 whitespace-pre-wrap">{m.message}</p>
+                <button onClick={() => removeMessage(m.id)} className="mt-3 text-[12px] uppercase tracking-nav text-slate2 hover:text-wine">Delete</button>
+              </article>
+            ))}
+          </div>
+        ) : (
         <div className="space-y-6">
           {fields.map((f) => (
             <div key={f.key}>
@@ -118,6 +146,7 @@ export default function AdminClient({ loggedIn: initial, configured }: { loggedI
             </div>
           ))}
         </div>
+        )}
       </div>
     </main>
   );

@@ -24,10 +24,11 @@ export default function ContactForm() {
     return <p className="font-serif text-[28px] leading-snug text-ink">Thank you. <span className="text-wine">We will be in touch shortly.</span></p>;
 
   return (
-    <form onSubmit={submit} className="space-y-6">
-      <input name="name" required placeholder="Name" aria-label="Name" className={field} />
-      <input name="email" type="email" required placeholder="Email" aria-label="Email" className={field} />
-      <textarea name="message" required rows={4} placeholder="How can we help?" aria-label="Message" className={`${field} resize-none`} />
+    <form onSubmit={submit} className="relative space-y-6">
+      <input name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute left-[-9999px] h-0 w-0 opacity-0" />
+      <input name="name" required maxLength={200} placeholder="Name" aria-label="Name" className={field} />
+      <input name="email" type="email" required maxLength={200} placeholder="Email" aria-label="Email" className={field} />
+      <textarea name="message" required maxLength={5000} rows={4} placeholder="How can we help?" aria-label="Message" className={`${field} resize-none`} />
       {state === "error" && <p className="text-[14px] text-wine">{err}</p>}
       <button
         disabled={state === "sending"}

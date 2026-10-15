@@ -93,9 +93,16 @@ export default function Globe() {
         for (const [a, b] of ARCS) {
           const A = toVec(...HUBS[a]), B = toVec(...HUBS[b]);
           const ang = A.angleTo(B);
-          const mid = A.clone().add(B).normalize().multiplyScalar(1 + 0.18 + ang * 0.28);
-          const curve = new THREE.QuadraticBezierCurve3(A.clone().multiplyScalar(1.004), mid, B.clone().multiplyScalar(1.004));
-          spin.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(curve.getPoints(72)), arcMat));
+          const peak = 0.012 + ang * 0.045; // low arc that hugs the surface
+          const pts: import("three").Vector3[] = [];
+          for (let i = 0; i <= 80; i++) {
+            const t = i / 80;
+            // great-circle interpolation, lifted by a sine bump so the ends touch the surface
+            const sinA = Math.sin(ang) || 1;
+            const p = A.clone().multiplyScalar(Math.sin((1 - t) * ang) / sinA).add(B.clone().multiplyScalar(Math.sin(t * ang) / sinA));
+            pts.push(p.normalize().multiplyScalar(1.003 + peak * Math.sin(Math.PI * t)));
+          }
+          spin.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), arcMat));
         }
         const hubGeo = new THREE.SphereGeometry(0.0075, 10, 10);
         const hubMat = new THREE.MeshBasicMaterial({ color: 0xffc27a });
