@@ -1,14 +1,14 @@
-import Arrow from "./Arrow";
+import Logo from "./Logo";
 import ContactForm from "./ContactForm";
 
 const paras = (t: string) => t.split(/\n\s*\n/).filter(Boolean);
 
 function Heading({ no, title }: { no?: string; title: string }) {
   return (
-    <div className="mb-10">
-      {no && <span className="mb-3 block text-[13px] uppercase tracking-eyebrow text-wine">{no}</span>}
+    <div className="mb-8">
+      {no && <span className="mb-2 block text-[13px] uppercase tracking-eyebrow text-wine">{no}</span>}
       <h2 className="font-serif text-[40px] font-normal leading-[1.05] tracking-[-0.01em] md:text-[52px]">{title}</h2>
-      <span className="mt-6 block h-px w-[48px] bg-wine" />
+      <span className="mt-5 block h-px w-[48px] bg-wine" />
     </div>
   );
 }
@@ -16,7 +16,7 @@ function Heading({ no, title }: { no?: string; title: string }) {
 export function About({ c }: { c: Record<string, string> }) {
   return (
     <section id="about" className="scroll-mt-4 border-t border-ink/10 bg-cream">
-      <div className="mx-auto grid max-w-[1440px] gap-10 px-6 py-24 md:px-[88px] lg:grid-cols-[1fr_1.4fr] lg:gap-24">
+      <div className="mx-auto grid max-w-[1440px] gap-10 px-6 py-16 md:py-20 md:px-[88px] lg:grid-cols-[1fr_1.4fr] lg:gap-24">
         <Heading no="ABOUT" title={c.about_title} />
         <div className="space-y-6 text-[18px] leading-[1.65] text-slate2">
           {paras(c.about_text).map((p, i) => (
@@ -28,38 +28,10 @@ export function About({ c }: { c: Record<string, string> }) {
   );
 }
 
-export function Businesses({ c }: { c: Record<string, string> }) {
-  return (
-    <section id="businesses" className="scroll-mt-4 border-t border-ink/10 bg-[#F1EFEA]">
-      <div className="mx-auto max-w-[1440px] px-6 py-24 md:px-[88px]">
-        <Heading no="WHAT WE DO" title={c.businesses_title} />
-        <div className="divide-y divide-wine/30 border-y border-wine/30">
-          {[1, 2, 3].map((n) => (
-            <article
-              key={n}
-              id={`business-${n}`}
-              className="biz-row grid scroll-mt-6 gap-6 px-4 py-12 transition-colors duration-500 lg:grid-cols-[120px_1fr_1.5fr] lg:gap-12"
-            >
-              <span className="text-[17px] text-wine">0{n}</span>
-              <h3 className="font-serif text-[36px] leading-[1.05] text-ink">{c[`biz_${n}_name`]}</h3>
-              <div>
-                <p className="text-[18px] leading-[1.65] text-slate2">{c[`biz_${n}_full`]}</p>
-                <a href="#contact" className="mt-6 inline-flex items-center gap-3 text-[12px] uppercase tracking-nav text-wine hover:gap-5 transition-all">
-                  Get in touch <Arrow width={22} />
-                </a>
-              </div>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 export function Simple({ id, no, title, text }: { id: string; no: string; title: string; text: string }) {
   return (
     <section id={id} className="scroll-mt-4 border-t border-ink/10 bg-cream">
-      <div className="mx-auto grid max-w-[1440px] gap-10 px-6 py-24 md:px-[88px] lg:grid-cols-[1fr_1.4fr] lg:gap-24">
+      <div className="mx-auto grid max-w-[1440px] gap-10 px-6 py-12 md:py-14 md:px-[88px] lg:grid-cols-[1fr_1.4fr] lg:gap-24">
         <Heading no={no} title={title} />
         <div className="space-y-6 text-[18px] leading-[1.65] text-slate2">
           {paras(text).map((p, i) => <p key={i}>{p}</p>)}
@@ -72,7 +44,7 @@ export function Simple({ id, no, title, text }: { id: string; no: string; title:
 export function Contact({ c }: { c: Record<string, string> }) {
   return (
     <section id="contact" className="scroll-mt-4 border-t border-ink/10 bg-cream">
-      <div className="mx-auto grid max-w-[1440px] gap-14 px-6 py-24 md:px-[88px] lg:grid-cols-[1fr_1.2fr] lg:gap-24">
+      <div className="mx-auto grid max-w-[1440px] gap-14 px-6 py-16 md:py-20 md:px-[88px] lg:grid-cols-[1fr_1.2fr] lg:gap-24">
         <div>
           <Heading no="CONTACT" title={c.contact_title} />
           <p className="max-w-[420px] text-[18px] leading-[1.6] text-slate2">{c.contact_text}</p>
@@ -102,8 +74,7 @@ export function Footer({ c }: { c: Record<string, string> }) {
     <footer className="bg-ink text-white/80">
       <div className="mx-auto flex max-w-[1440px] flex-col items-start justify-between gap-6 px-6 py-10 text-[13px] md:flex-row md:items-center md:px-[88px]">
         <div className="flex items-center gap-4">
-          <span className="font-serif text-[30px] leading-none tracking-[-0.09em] text-white">VIN</span>
-          <span className="text-[10px] uppercase tracking-[0.45em]">Holding</span>
+          <Logo invert className="h-[56px]" />
         </div>
         <p>© {new Date().getFullYear()} {c.footer_text}</p>
         <a href="#top" className="uppercase tracking-nav hover:text-white">Back to top ↑</a>

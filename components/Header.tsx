@@ -29,7 +29,7 @@ export default function Header() {
   return (
     <header className="absolute inset-x-0 top-0 z-30">
       <div className="mx-auto flex max-w-[1440px] items-start justify-between px-6 pt-5 md:px-[88px]">
-        <Logo />
+        <Logo className="h-[64px] md:h-[72px]" />
         <nav className="hidden pt-[22px] lg:block" aria-label="Main">
           <ul className="flex gap-9 text-[12px] uppercase tracking-nav">
             {NAV.map((n) => (

@@ -22,9 +22,9 @@ The site works with built-in default text even with no Supabase keys.
 Create a project, open **SQL Editor**, and run `supabase/schema.sql` (creates `site_content` and `contact_messages`). Then add the two env vars above.
 Log in at `/admin`, edit any text block, press **Save changes** — the live site updates immediately.
 
-## Globe
-`components/Globe.tsx` is a canvas globe (dotted land, red connection arcs, drag to rotate). To use your own render instead, set **Globe image URL** in the admin (Hero tab), e.g. `/globe.webp` after placing the file in `/public`.
+## Hero image
+The hero uses `public/earth.webp` (slowly rotating). To change it, replace the file or set **Earth image URL** in the admin (Hero tab). The logo is `public/logo.png`.
 
 ## Notes
 - Header links: Home, About Us, Our Businesses, Investments, Partnerships, Contact. Investments and Partnerships sections reuse your supplied copy and are editable in the admin.
-- The 01/02/03 arrows scroll to the matching block in "Our Businesses" and highlight it.
+- Clicking a 01/02/03 card opens its full description right below the cards (the nav item "Our Businesses" scrolls to them).

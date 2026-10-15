@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
+import Logo from "../../components/Logo";
 import { CONTENT_FIELDS, DEFAULT_CONTENT } from "@/lib/content";
 
 const input = "w-full border border-ink/20 bg-white px-3 py-2 text-[15px] outline-none focus:border-wine";
@@ -56,8 +57,8 @@ export default function AdminClient({ loggedIn: initial, configured }: { loggedI
     return (
       <main className="flex min-h-screen items-center justify-center bg-cream px-6">
         <form onSubmit={login} className="w-full max-w-[380px] border border-ink/10 bg-white p-10">
-          <p className="font-serif text-[40px] leading-none tracking-[-0.08em]">VIN</p>
-          <p className="mb-8 mt-1 text-[10px] uppercase tracking-[0.45em]">Holding · Admin</p>
+          <Logo className="h-[64px]" />
+          <p className="mb-8 mt-2 text-[10px] uppercase tracking-[0.45em]">Admin</p>
           {!configured && <p className="mb-4 text-[14px] text-wine">ADMIN_PASSWORD is not set. Add it in your environment variables.</p>}
           <label className="mb-2 block text-[11px] uppercase tracking-eyebrow text-slate2" htmlFor="pw">Password</label>
           <input id="pw" type="password" autoFocus value={password} onChange={(e) => setPassword(e.target.value)} className={input} />
@@ -74,7 +75,7 @@ export default function AdminClient({ loggedIn: initial, configured }: { loggedI
     <main className="min-h-screen bg-cream">
       <header className="sticky top-0 z-10 flex items-center justify-between border-b border-ink/10 bg-cream/95 px-6 py-4 backdrop-blur">
         <div className="flex items-baseline gap-4">
-          <span className="font-serif text-[28px] leading-none tracking-[-0.08em]">VIN</span>
+          <Logo className="h-[40px]" />
           <span className="text-[12px] uppercase tracking-nav text-slate2">Content manager</span>
         </div>
         <div className="flex items-center gap-4 text-[13px]">
