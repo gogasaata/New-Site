@@ -34,8 +34,6 @@ export const DEFAULT_CONTENT: Record<string, string> = {
   about_text:
     "VIN Holding brings together an international team of professionals from across the world, each with over 25 years of experience in business, investment, technology, and strategic development.\n\nOur strength lies in the diversity of our expertise, the depth of our relationships, and our ability to connect people, ideas, and opportunities across borders.\n\nWe believe that meaningful success is built on trust, innovation, and lasting partnerships.\n\nWith a global perspective and an entrepreneurial spirit, we turn connections into opportunities and opportunities into value.",
 
-  businesses_title: "Our Businesses",
-
   investments_title: "Investments",
   investments_text:
     "By connecting innovative projects with investors, venture capital networks, and strategic partners, we transform ambitious ideas into sustainable businesses and long-term value.",
@@ -59,15 +57,14 @@ export const CONTENT_FIELDS: ContentField[] = [
   { key: "hero_cta", label: "Button label", group: "Hero" },
   {
     key: "globe_image_url",
-    label: "Globe image URL (optional)",
+    label: "Earth image URL (optional)",
     group: "Hero",
-    hint: "Leave empty to use the built-in interactive globe. Paste an image URL (or /globe.webp from /public) to replace it.",
+    hint: "Leave empty to use the built-in Earth image (/earth.webp). Paste an image URL to replace it.",
   },
 
   { key: "about_title", label: "Section title", group: "About Us" },
   { key: "about_text", label: "Text (blank line = new paragraph)", group: "About Us", multiline: true },
 
-  { key: "businesses_title", label: "Section title", group: "Businesses" },
   { key: "biz_1_name", label: "01 – Name", group: "Businesses" },
   { key: "biz_1_short", label: "01 – Short text", group: "Businesses" },
   { key: "biz_1_full", label: "01 – Full text", group: "Businesses", multiline: true },
