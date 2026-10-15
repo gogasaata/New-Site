@@ -90,6 +90,17 @@ export const CONTENT_FIELDS: ContentField[] = [
 
 export const ALLOWED_KEYS = new Set(Object.keys(DEFAULT_CONTENT));
 
+/** Returns an error message when a value is not acceptable for its key, otherwise null. */
+export function validateValue(key: string, value: string): string | null {
+  if (key === "globe_image_url" && value && !/^(\/(?!\/)|https:\/\/)\S*$/.test(value)) {
+    return "Image URL must start with / or https://";
+  }
+  if (key === "contact_email" && value && !/^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+$/.test(value)) {
+    return "Contact email is not a valid address";
+  }
+  return null;
+}
+
 export function supabaseConfigured() {
   return !!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
 }
