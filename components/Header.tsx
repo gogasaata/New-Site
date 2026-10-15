@@ -17,21 +17,39 @@ export default function Header() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const els = NAV.map((n) => document.getElementById(n.id)).filter(Boolean) as HTMLElement[];
-    const io = new IntersectionObserver(
-      (entries) => entries.forEach((e) => e.isIntersecting && setActive(e.target.id)),
-      { rootMargin: "-40% 0px -55% 0px" },
-    );
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const line = Math.min(window.innerHeight * 0.35, 180);
+      let current = NAV[0].id;
+      let best = -Infinity;
+      for (const n of NAV) {
+        const el = document.getElementById(n.id);
+        if (!el) continue;
+        const top = el.getBoundingClientRect().top;
+        // the section whose top is closest above the reading line (DOM order differs from menu order)
+        if (top <= line && top > best) { best = top; current = n.id; }
+      }
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) current = "contact";
+      setActive(current);
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, []);
 
   return (
     <header className="absolute inset-x-0 top-0 z-30">
       <div className="mx-auto flex max-w-[1440px] items-start justify-between px-6 pt-5 md:px-[88px]">
         <Logo className="h-[64px] md:h-[72px]" />
-        <nav className="hidden pt-[22px] lg:block" aria-label="Main">
-          <ul className="flex gap-9 text-[12px] uppercase tracking-nav">
+        <nav className="hidden pt-[22px] lg:absolute lg:left-1/2 lg:block lg:-translate-x-1/2" aria-label="Main">
+          <ul className="flex gap-9 whitespace-nowrap text-[12px] uppercase tracking-nav">
             {NAV.map((n) => (
               <li key={n.id}>
                 <a
@@ -45,13 +63,6 @@ export default function Header() {
             ))}
           </ul>
         </nav>
-        <div className="hidden items-center gap-5 pt-[14px] lg:flex">
-          <span className="h-[30px] w-px bg-ink" />
-          <span className="flex items-center gap-2 text-[12px] tracking-nav">
-            EN
-            <svg width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" strokeWidth="1.2"><path d="M1 1l4 4 4-4" /></svg>
-          </span>
-        </div>
         <button
           className="mt-3 flex h-10 w-10 flex-col items-center justify-center gap-[6px] lg:hidden"
           aria-label="Menu"

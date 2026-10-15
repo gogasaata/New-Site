@@ -1,6 +1,7 @@
 import Arrow from "./Arrow";
 import BusinessCards from "./BusinessCards";
 import Earth from "./Earth";
+import Globe from "./Globe";
 
 export default function Hero({ c }: { c: Record<string, string> }) {
   const items = [1, 2, 3].map((n) => {
@@ -10,9 +11,9 @@ export default function Hero({ c }: { c: Record<string, string> }) {
   });
 
   return (
-    <section id="top" className="relative bg-cream">
-      <div className="relative mx-auto max-w-[1440px] overflow-hidden lg:h-[41vw] lg:max-h-[640px] lg:min-h-[540px]">
-        <Earth src={c.globe_image_url || "/earth.webp"} />
+    <section className="relative bg-cream">
+      <div id="top" className="relative mx-auto max-w-[1440px] overflow-hidden lg:h-[41vw] lg:max-h-[640px] lg:min-h-[540px]">
+        {c.globe_image_url ? <Earth src={c.globe_image_url} /> : <Globe />}
 
         <div className="relative z-10 flex h-full flex-col justify-center px-6 pb-[330px] pt-[120px] md:px-[88px] lg:pb-0 lg:pt-[100px]">
           <p className="mb-4 text-[13px] uppercase tracking-eyebrow text-ink/80 md:text-[14px]">{c.hero_eyebrow}</p>
