@@ -26,11 +26,11 @@ export default function BusinessCards({ items }: { items: Biz[] }) {
         {items.map((b) => {
           const active = open === b.n;
           return (
+            <div key={b.n} className="min-w-0 md:contents">
             <button
-              key={b.n}
               type="button"
               aria-expanded={active}
-              aria-controls="business-detail"
+              aria-controls={`business-detail-${b.n}`}
               onClick={() => setOpen(active ? null : b.n)}
               className="group block min-w-0 py-7 text-left md:px-6 md:py-9 md:first:pl-9 lg:px-9 lg:[&:nth-child(2)]:pl-14 lg:[&:nth-child(3)]:pl-14"
             >
@@ -47,11 +47,22 @@ export default function BusinessCards({ items }: { items: Biz[] }) {
                 width={24}
               />
             </button>
+            {/* phones: the description opens right under the tapped card */}
+            {active && (
+              <div id={`business-detail-${b.n}`} className="pb-7 md:hidden">
+                <p className="text-[16px] leading-[1.6] text-slate2">{b.full}</p>
+                <div className="mt-4 flex gap-8 text-[12px] uppercase tracking-nav">
+                  <a href="#contact" className="text-wine">Get in touch</a>
+                  <button type="button" onClick={() => setOpen(null)} className="text-ink/60">Close</button>
+                </div>
+              </div>
+            )}
+            </div>
           );
         })}
       </div>
 
-      <div id="business-detail" className={`grid transition-[grid-template-rows] duration-500 ${current ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+      <div id="business-detail" className={`hidden md:grid transition-[grid-template-rows] duration-500 ${current ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
         <div className="overflow-hidden">
           {current && (
             <div className="grid gap-4 border-t border-wine/30 py-8 md:grid-cols-[1fr_1.6fr] md:gap-12 md:px-9">
