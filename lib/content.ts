@@ -57,9 +57,9 @@ export const CONTENT_FIELDS: ContentField[] = [
   { key: "hero_cta", label: "Button label", group: "Hero" },
   {
     key: "globe_image_url",
-    label: "Earth image URL (optional)",
+    label: "Custom hero image URL (optional)",
     group: "Hero",
-    hint: "Leave empty to use the built-in Earth image (/earth.webp). Paste an image URL to replace it.",
+    hint: "Leave empty to use the built-in rotating 3D globe. Paste an image URL only if you want a static picture instead.",
   },
 
   { key: "about_title", label: "Section title", group: "About Us" },
